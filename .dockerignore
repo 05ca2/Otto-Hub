@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.github
+.vscode
+.idea
+*.md
+!README.md
+!DEPLOY_*.md
+data
+data/*
+!data/.gitkeep
+.env
+.env.local
+.env.*.local
+*.log
+*.tsbuildinfo

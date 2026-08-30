@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  --bg-primary: #f7f7f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eeeef1;
+  --text-primary: #1f2129;
+  --text-secondary: #4b4e58;
+  --text-muted: #8a8d99;
+  --border-primary: #eeeef1;
+  --border-secondary: #d8d9df;
+}
+
+.dark {
+  --bg-primary: #0f1115;
+  --bg-secondary: #1f2129;
+  --bg-tertiary: #353840;
+  --text-primary: #eeeef1;
+  --text-secondary: #d8d9df;
+  --text-muted: #8a8d99;
+  --border-primary: #353840;
+  --border-secondary: #4b4e58;
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  @apply bg-accent-400/40;
+}
+
+/* Reader highlight styles */
+.hi-yellow { background-color: theme(colors.hi.yellow); }
+.hi-green  { background-color: theme(colors.hi.green); }
+.hi-pink   { background-color: theme(colors.hi.pink); }
+.hi-blue   { background-color: theme(colors.hi.blue); }
+.hi-active { outline: 2px solid theme(colors.accent.500); outline-offset: 1px; }
+
+.markdown-body h1 { @apply text-2xl font-bold mt-6 mb-3; }
+.markdown-body h2 { @apply text-xl font-semibold mt-5 mb-2; }
+.markdown-body h3 { @apply text-lg font-semibold mt-4 mb-2; }
+.markdown-body p  { @apply my-2 leading-relaxed; }
+.markdown-body ul { @apply list-disc pl-6 my-2; }
+.markdown-body ol { @apply list-decimal pl-6 my-2; }
+.markdown-body code { @apply px-1 py-0.5 rounded text-sm font-mono; background-color: var(--bg-tertiary); }
+.markdown-body pre  { @apply rounded-lg p-4 overflow-x-auto my-3; background-color: #1f2129; color: #eeeef1; }
+.markdown-body pre code { @apply bg-transparent p-0; }
+.markdown-body blockquote { @apply border-l-4 pl-4 italic my-3; border-color: var(--border-secondary); color: var(--text-secondary); }
+.markdown-body table { @apply my-3 border-collapse; }
+.markdown-body th, .markdown-body td { @apply border px-2 py-1; border-color: var(--border-secondary); }
