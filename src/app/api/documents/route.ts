@@ -4,6 +4,7 @@ import { getDb, type DocumentRow } from '@/lib/db';
 import { extractFromBuffer } from '@/lib/extract';
 import { requireUser } from '@/lib/auth';
 import { syncDocument } from '@/lib/github-sync';
+import { trackTask, ensureCredits } from '@/lib/tasks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -109,6 +110,10 @@ export async function POST(req: NextRequest) {
     mime: fileNames.join(', '),
     createdAt: now,
   }).catch(() => {});
+
+  // Track upload_document task
+  ensureCredits(user.id);
+  trackTask(user.id, 'upload_document');
 
   return NextResponse.json({
     id,

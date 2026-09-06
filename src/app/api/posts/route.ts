@@ -5,6 +5,7 @@ import { getDb } from '@/lib/db';
 import { requireUser } from '@/lib/auth';
 import { moderateContent } from '@/lib/moderation';
 import { syncPost } from '@/lib/github-sync';
+import { trackTask, ensureCredits } from '@/lib/tasks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -113,6 +114,10 @@ export async function POST(req: NextRequest) {
       createdAt: Date.now(),
     }).catch(() => {});
   }
+
+  // Track post_question task
+  ensureCredits(user.id);
+  trackTask(user.id, 'post_question');
 
   return NextResponse.json({ id });
 }

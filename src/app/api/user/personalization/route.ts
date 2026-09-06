@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/auth';
 import { getDb } from '@/lib/db';
 import { nanoid } from 'nanoid';
+import { computeTaskProgress, ensureCredits } from '@/lib/tasks';
 
 // GET /api/user/personalization - Get all personalization data for current user
 export async function GET() {
@@ -19,9 +20,9 @@ export async function GET() {
   // Get user's current selections
   const userProfile = db.prepare('SELECT avatar_frame, wallpaper FROM users WHERE id = ?').get(user.id) as { avatar_frame: string; wallpaper: string } | undefined;
 
-  // Get user's task progress for current week
-  const weekStart = getWeekStart();
-  const tasks = db.prepare('SELECT * FROM user_tasks WHERE user_id = ? AND period_start >= ?').all(user.id, weekStart);
+  // Compute task progress from actual stats (not empty user_tasks table)
+  ensureCredits(user.id);
+  const tasks = computeTaskProgress(user.id);
 
   // Get user's unlock progress for frames and wallpapers
   const stats = getUserStats(db, user.id);

@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { getDb, type UserRow } from '@/lib/db';
 import { hashPassword, verifyPassword } from '@/lib/password';
 import { createSession, destroySession, getSessionUser, SUPER_ADMIN_EMAIL } from '@/lib/auth';
+import { trackTask, ensureCredits } from '@/lib/tasks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -45,6 +46,9 @@ export async function POST(req: NextRequest) {
        VALUES (?, ?, ?, NULL, NULL, ?, NULL, ?, ?)`,
     ).run(id, p.data.name, p.data.email.toLowerCase(), hashPassword(p.data.password), isSuperAdminEmail ? 'super_admin' : null, now);
     await createSession(id);
+    // Track daily_login task for new user
+    ensureCredits(id);
+    trackTask(id, 'daily_login');
     return NextResponse.json({ user: { id, name: p.data.name, email: p.data.email.toLowerCase() } });
   }
   // login
@@ -56,6 +60,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
   }
   await createSession(user.id);
+  // Track daily_login task
+  ensureCredits(user.id);
+  trackTask(user.id, 'daily_login');
   return NextResponse.json({ user: { id: user.id, name: user.name, email: user.email } });
 }
 

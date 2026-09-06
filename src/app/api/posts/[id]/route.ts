@@ -4,6 +4,7 @@ import type { SupportedValueType } from 'node:sqlite';
 import { getDb, type PostRow } from '@/lib/db';
 import { requireUser } from '@/lib/auth';
 import { moderateContent } from '@/lib/moderation';
+import { trackTask, ensureCredits } from '@/lib/tasks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -81,6 +82,9 @@ export async function POST(req: NextRequest, { params }: Params) {
     db.prepare(
       `INSERT INTO comments (id, post_id, author_id, body, parent_id, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
     ).run(id, post.id, user.id, parsed.data.body, parsed.data.parent_id || null, Date.now());
+    // Track answer_question task
+    ensureCredits(user.id);
+    trackTask(user.id, 'answer_question');
     return NextResponse.json({ id });
   }
   if (parsed.data.action === 'vote') {
@@ -95,6 +99,11 @@ export async function POST(req: NextRequest, { params }: Params) {
       ).run(user.id, post.id, parsed.data.value, Date.now());
     }
     const s = (db.prepare(`SELECT COALESCE(SUM(value),0) AS s FROM votes WHERE target_type = 'post' AND target_id = ?`).get(post.id) as { s: number }).s;
+    // Track receive_upvote task for post author when upvoted
+    if (parsed.data.value === 1) {
+      ensureCredits(post.author_id);
+      trackTask(post.author_id, 'receive_upvote');
+    }
     return NextResponse.json({ score: s });
   }
   if (parsed.data.action === 'best_answer') {

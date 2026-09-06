@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 import { getDb, type UserRow } from '@/lib/db';
 import { createSession, getSessionUser } from '@/lib/auth';
+import { trackTask, ensureCredits } from '@/lib/tasks';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -108,6 +109,9 @@ export async function GET(req: NextRequest) {
       );
     }
     await createSession(user.id);
+    // Track daily_login task
+    ensureCredits(user.id);
+    trackTask(user.id, 'daily_login');
     return NextResponse.redirect(new URL('/', origin).toString());
   }
   return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
