@@ -21,7 +21,6 @@ COPY --from=builder /app/src ./src
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/tailwind.config.ts ./
 COPY --from=builder /app/postcss.config.js ./
-COPY --from=builder /app/scripts ./scripts
 
 # Persistent data dir
 RUN mkdir -p /app/data
