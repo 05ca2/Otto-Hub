@@ -231,6 +231,14 @@ type TranslationKeys = {
   'group.noMessages': string;
   'group.sendMessage': string;
   'group.typeMessage': string;
+  'group.recall': string;
+  'group.quote': string;
+  'group.like': string;
+  'group.dislike': string;
+  'group.dissolve': string;
+  'group.dissolveConfirm': string;
+  'group.dissolved': string;
+  'group.quotedMessage': string;
   'group.uploadFile': string;
   'group.emoji': string;
   'group.pinned': string;
@@ -496,6 +504,14 @@ const translations: Record<Locale, TranslationKeys> = {
     'group.noMessages': 'No messages yet. Start the conversation!',
     'group.sendMessage': 'Send',
     'group.typeMessage': 'Type a message...',
+  'group.recall': 'Recall',
+  'group.quote': 'Quote',
+  'group.like': 'Like',
+  'group.dislike': 'Dislike',
+  'group.dissolve': 'Dissolve Group',
+  'group.dissolveConfirm': 'Are you sure you want to dissolve this group? This cannot be undone.',
+  'group.dissolved': 'Group dissolved',
+  'group.quotedMessage': 'Quoted message',
     'group.uploadFile': 'Upload File',
     'group.emoji': 'Emoji',
     'group.pinned': 'Pinned',
@@ -759,6 +775,14 @@ const translations: Record<Locale, TranslationKeys> = {
     'group.noMessages': '暂无消息，开始对话吧！',
     'group.sendMessage': '发送',
     'group.typeMessage': '输入消息...',
+  'group.recall': '撤回',
+  'group.quote': '引用',
+  'group.like': '赞同',
+  'group.dislike': '反对',
+  'group.dissolve': '解散群组',
+  'group.dissolveConfirm': '确定要解散这个群组吗？此操作不可撤销。',
+  'group.dissolved': '群组已解散',
+  'group.quotedMessage': '引用的消息',
     'group.uploadFile': '上传文件',
     'group.emoji': '表情',
     'group.pinned': '置顶',

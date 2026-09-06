@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Users, Send, Smile, Paperclip, Megaphone, Pin, Trash2, Edit2, Loader2, X, Settings, Plus } from 'lucide-react';
+import { ArrowLeft, Users, Send, Smile, Paperclip, Megaphone, Pin, Trash2, Edit2, Loader2, X, Settings, Plus, ThumbsDown, Quote, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 import { t } from '@/lib/translations';
 import { LaurelFrame } from '@/components/LaurelFrame';
@@ -39,6 +39,9 @@ export default function GroupDetailPage() {
   const [editName, setEditName] = useState('');
   const [editDesc, setEditDesc] = useState('');
   const [saving, setSaving] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; message: Message } | null>(null);
+  const [quoting, setQuoting] = useState<Message | null>(null);
+  const [dissolving, setDissolving] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -88,12 +91,17 @@ export default function GroupDetailPage() {
     if (!msgInput.trim() || sending) return;
     setSending(true);
     try {
+      const payload: Record<string, unknown> = { content: msgInput, msg_type: 'text' };
+      if (quoting) {
+        payload.quoted_message_id = quoting.id;
+        payload.content = `> ${quoting.author_name}: ${quoting.content}\n\n${msgInput}`;
+      }
       const r = await fetch(`/api/groups/${params.id}/messages`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ content: msgInput, msg_type: 'text' }),
+        body: JSON.stringify(payload),
       });
-      if (r.ok) { setMsgInput(''); await load(); }
+      if (r.ok) { setMsgInput(''); setQuoting(null); await load(); }
     } finally { setSending(false); }
   }
 
@@ -182,6 +190,44 @@ export default function GroupDetailPage() {
     setShowAnnModal(true);
   }
 
+  function handleContextMenu(e: React.MouseEvent, message: Message) {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY, message });
+  }
+
+  async function recallMessage(message: Message) {
+    if (!confirm(t(locale, 'group.recall') + '?')) return;
+    await fetch(`/api/groups/${params.id}/messages`, {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ message_id: message.id }),
+    });
+    setContextMenu(null);
+    await load();
+  }
+
+  function quoteMessage(message: Message) {
+    setQuoting(message);
+    setContextMenu(null);
+  }
+
+  async function dissolveGroup() {
+    if (!confirm(t(locale, 'group.dissolveConfirm'))) return;
+    setDissolving(true);
+    try {
+      const r = await fetch(`/api/groups/${params.id}`, { method: 'DELETE' });
+      if (r.ok) { router.push('/community/groups'); }
+    } finally { setDissolving(false); }
+  }
+
+  // Close context menu on click outside
+  useEffect(() => {
+    if (!contextMenu) return;
+    const close = () => setContextMenu(null);
+    window.addEventListener('click', close);
+    return () => window.removeEventListener('click', close);
+  }, [contextMenu]);
+
   if (!group) return <div className="text-ink-400 dark:text-ink-500 text-sm">{t(locale, 'common.loading')}</div>;
 
   return (
@@ -261,17 +307,20 @@ export default function GroupDetailPage() {
                           <span className="ml-1.5">{new Date(m.created_at).toLocaleTimeString(locale === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                         {m.msg_type === 'emoji' ? (
-                          <div className="text-3xl">{m.content}</div>
+                          <div className="text-3xl leading-loose">{m.content}</div>
                         ) : m.msg_type === 'file' ? (
                           <a href={m.file_url || '#'} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-ink-50 dark:bg-ink-700 border border-ink-200 dark:border-ink-600 text-sm hover:bg-ink-100 dark:hover:bg-ink-600">
                             <Paperclip className="w-3.5 h-3.5" /> {m.file_name || 'File'}
                           </a>
                         ) : (
-                          <div className={`inline-block px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
-                            m.author_id === me?.id
-                              ? 'bg-accent-500 text-white rounded-br-md'
-                              : 'bg-ink-100 dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-bl-md'
-                          }`}>{m.content}</div>
+                          <div
+                            onContextMenu={(e) => handleContextMenu(e, m)}
+                            className={`inline-block px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap cursor-default select-text ${
+                              m.author_id === me?.id
+                                ? 'bg-accent-500 text-white rounded-br-md'
+                                : 'bg-ink-100 dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-bl-md'
+                            }`}
+                          >{m.content}</div>
                         )}
                       </div>
                     </div>
@@ -281,15 +330,21 @@ export default function GroupDetailPage() {
               </div>
               {/* Input */}
               <div className="border-t border-ink-100 dark:border-ink-700 p-3">
+                {quoting && (
+                  <div className="mb-2 px-3 py-2 bg-accent-50 dark:bg-accent-900/20 border-l-2 border-accent-400 rounded text-xs text-ink-600 dark:text-ink-400 flex items-center justify-between">
+                    <span className="truncate"><span className="font-medium">{quoting.author_name}:</span> {quoting.content}</span>
+                    <button onClick={() => setQuoting(null)} className="ml-2 shrink-0"><X className="w-3 h-3" /></button>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <div className="relative">
                     <button onClick={() => setShowEmoji(!showEmoji)} className="p-2 rounded-lg hover:bg-ink-100 dark:hover:bg-ink-700 text-ink-400">
                       <Smile className="w-5 h-5" />
                     </button>
                     {showEmoji && (
-                      <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-ink-800 border border-ink-200 dark:border-ink-600 rounded-xl shadow-xl p-2 grid grid-cols-6 gap-1 z-10">
+                      <div className="absolute bottom-full left-0 mb-2 bg-white dark:bg-ink-800 border border-ink-200 dark:border-ink-600 rounded-xl shadow-xl p-3 grid grid-cols-6 gap-2 z-10 w-[280px]">
                         {QUICK_EMOJI.map((e) => (
-                          <button key={e} onClick={() => sendEmoji(e)} className="text-xl p-1 hover:bg-ink-100 dark:hover:bg-ink-700 rounded">{e}</button>
+                          <button key={e} onClick={() => sendEmoji(e)} className="text-2xl p-2 hover:bg-ink-100 dark:hover:bg-ink-700 rounded-lg transition-colors">{e}</button>
                         ))}
                       </div>
                     )}
@@ -383,6 +438,48 @@ export default function GroupDetailPage() {
         </>
       )}
 
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          className="fixed z-50 bg-white dark:bg-ink-800 border border-ink-200 dark:border-ink-600 rounded-xl shadow-xl py-1 min-w-[120px]"
+          style={{ left: contextMenu.x, top: contextMenu.y }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {contextMenu.message.author_id === me?.id && (
+            <button
+              onClick={() => recallMessage(contextMenu.message)}
+              className="w-full px-3 py-2 text-left text-sm hover:bg-ink-100 dark:hover:bg-ink-700 flex items-center gap-2 text-ink-700 dark:text-ink-300"
+            >
+              <RotateCcw className="w-4 h-4" />
+              {t(locale, 'group.recall')}
+            </button>
+          )}
+          {contextMenu.message.author_id !== me?.id && (
+            <>
+              <button
+                onClick={() => setContextMenu(null)}
+                className="w-full px-3 py-2 text-left text-sm hover:bg-ink-100 dark:hover:bg-ink-700 flex items-center gap-2 text-ink-700 dark:text-ink-300"
+              >
+                👍 {t(locale, 'group.like')}
+              </button>
+              <button
+                onClick={() => setContextMenu(null)}
+                className="w-full px-3 py-2 text-left text-sm hover:bg-ink-100 dark:hover:bg-ink-700 flex items-center gap-2 text-ink-700 dark:text-ink-300"
+              >
+                👎 {t(locale, 'group.dislike')}
+              </button>
+            </>
+          )}
+          <button
+            onClick={() => quoteMessage(contextMenu.message)}
+            className="w-full px-3 py-2 text-left text-sm hover:bg-ink-100 dark:hover:bg-ink-700 flex items-center gap-2 text-ink-700 dark:text-ink-300"
+          >
+            <Quote className="w-4 h-4" />
+            {t(locale, 'group.quote')}
+          </button>
+        </div>
+      )}
+
       {/* Announcement Modal */}
       {showAnnModal && (
         <div className="fixed inset-0 z-50 bg-ink-900/40 flex items-center justify-center p-4" onClick={() => setShowAnnModal(false)}>
@@ -429,6 +526,12 @@ export default function GroupDetailPage() {
             </div>
             <div className="flex justify-end gap-2 mt-4">
               <button onClick={() => setShowSettings(false)} className="px-3 py-1.5 rounded text-sm hover:bg-ink-100 dark:hover:bg-ink-700">{t(locale, 'common.cancel')}</button>
+              {isOwner && (
+                <button onClick={dissolveGroup} disabled={dissolving} className="px-3 py-1.5 rounded bg-red-500 text-white text-sm font-medium hover:bg-red-600 disabled:opacity-50 flex items-center gap-1.5">
+                  {dissolving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+                  {t(locale, 'group.dissolve')}
+                </button>
+              )}
               <button onClick={saveSettings} disabled={!editName.trim() || saving} className="px-3 py-1.5 rounded bg-accent-500 text-white text-sm font-medium hover:bg-accent-600 disabled:opacity-50 flex items-center gap-1.5">
                 {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
                 {t(locale, 'common.save')}

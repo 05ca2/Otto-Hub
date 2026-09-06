@@ -39,3 +39,20 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   ).run(id, params.id, user.id, body.content, msgType, body.file_url || null, body.file_name || null, Date.now());
   return NextResponse.json({ ok: true, id });
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  let user;
+  try { user = await requireUser(); } catch { return NextResponse.json({ error: 'Not authenticated' }, { status: 401 }); }
+  const db = getDb();
+  const body = await req.json().catch(() => null);
+  if (!body?.message_id) return NextResponse.json({ error: 'Missing message_id' }, { status: 400 });
+  const msg = db.prepare('SELECT * FROM group_messages WHERE id = ? AND group_id = ?').get(body.message_id, params.id) as any;
+  if (!msg) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  // Only author or group owner can recall
+  const group = db.prepare('SELECT owner_id FROM groups WHERE id = ?').get(params.id) as any;
+  if (msg.author_id !== user.id && group?.owner_id !== user.id) {
+    return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
+  }
+  db.prepare('DELETE FROM group_messages WHERE id = ?').run(body.message_id);
+  return NextResponse.json({ ok: true });
+}
