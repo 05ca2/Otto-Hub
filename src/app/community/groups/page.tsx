@@ -153,7 +153,7 @@ export default function GroupsPage() {
                     </div>
                     {g.description && <p className="text-sm text-ink-600 dark:text-ink-400 mt-1 line-clamp-2">{g.description}</p>}
                     <div className="text-xs text-ink-400 dark:text-ink-500 mt-2 flex items-center gap-2">
-                      <span>{t(locale, 'group.role')}: {g.role}</span>
+                      <span>{g.role}</span>
                       {g.privacy === 'public' ? (
                         <span className="px-1.5 py-0.5 rounded bg-green-100 text-green-700">{t(locale, 'group.public')}</span>
                       ) : (

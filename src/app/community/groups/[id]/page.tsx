@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Users, Send, Smile, Paperclip, Megaphone, Pin, Trash2, Edit2, Loader2, X, Settings } from 'lucide-react';
+import { ArrowLeft, Users, Send, Smile, Paperclip, Megaphone, Pin, Trash2, Edit2, Loader2, X, Settings, Plus } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 import { t } from '@/lib/translations';
 import { LaurelFrame } from '@/components/LaurelFrame';
