@@ -130,6 +130,24 @@ type TranslationKeys = {
   'dashboard.minutesAgo': string;
   'dashboard.hoursAgo': string;
   'dashboard.daysAgo': string;
+  'dashboard.documentsDesc': string;
+  'dashboard.exploreDesc': string;
+  'dashboard.communityDesc': string;
+  'dashboard.settingsDesc': string;
+  'dashboard.groupsDesc': string;
+  'dashboard.shopDesc': string;
+  'dashboard.ohbit': string;
+  'dashboard.ohbitDesc': string;
+  'dashboard.tips': string;
+  'dashboard.pinned': string;
+  'dashboard.comments': string;
+  'dashboard.members': string;
+  'dashboard.kChars': string;
+  'dashboard.uploadOne': string;
+  'dashboard.createOne': string;
+  'dashboard.tipUpload': string;
+  'dashboard.tipExplore': string;
+  'dashboard.tipCountdown': string;
   // Home / Documents
   'home.welcome': string;
   'home.description': string;
@@ -403,6 +421,24 @@ const translations: Record<Locale, TranslationKeys> = {
     'dashboard.minutesAgo': 'm ago',
     'dashboard.hoursAgo': 'h ago',
     'dashboard.daysAgo': 'd ago',
+    'dashboard.documentsDesc': 'Upload & manage',
+    'dashboard.exploreDesc': 'Community content',
+    'dashboard.communityDesc': 'Study rooms',
+    'dashboard.settingsDesc': 'Account & AI',
+    'dashboard.groupsDesc': 'Chat & collaborate',
+    'dashboard.shopDesc': 'Frames & rewards',
+    'dashboard.ohbit': 'Ohbit',
+    'dashboard.ohbitDesc': 'Earn via tasks',
+    'dashboard.tips': 'Tips',
+    'dashboard.pinned': 'Pinned',
+    'dashboard.comments': 'comments',
+    'dashboard.members': 'members',
+    'dashboard.kChars': 'k chars',
+    'dashboard.uploadOne': 'Upload one →',
+    'dashboard.createOne': 'Create one →',
+    'dashboard.tipUpload': 'Upload any document and let AI generate cheatsheets, summaries, and practice questions.',
+    'dashboard.tipExplore': 'Browse the Explore page to find community-shared study materials.',
+    'dashboard.tipCountdown': 'Add exam dates to the countdown timer to stay on track.',
     // Home / Documents
     'home.welcome': 'Welcome to Otto-Hub',
     'home.description': 'Your AI-powered study assistant. Upload any document and turn it into cheatsheets, summaries, and practice questions.',
@@ -674,6 +710,24 @@ const translations: Record<Locale, TranslationKeys> = {
     'dashboard.minutesAgo': '分钟前',
     'dashboard.hoursAgo': '小时前',
     'dashboard.daysAgo': '天前',
+    'dashboard.documentsDesc': '上传与管理',
+    'dashboard.exploreDesc': '社区内容',
+    'dashboard.communityDesc': '学习房间',
+    'dashboard.settingsDesc': '账户与 AI',
+    'dashboard.groupsDesc': '聊天与协作',
+    'dashboard.shopDesc': '边框与奖励',
+    'dashboard.ohbit': 'Ohbit',
+    'dashboard.ohbitDesc': '通过任务赚取',
+    'dashboard.tips': '提示',
+    'dashboard.pinned': '置顶',
+    'dashboard.comments': '评论',
+    'dashboard.members': '成员',
+    'dashboard.kChars': 'k 字',
+    'dashboard.uploadOne': '上传一个 →',
+    'dashboard.createOne': '创建一个 →',
+    'dashboard.tipUpload': '上传任何文档，让 AI 生成笔记、摘要和练习题。',
+    'dashboard.tipExplore': '浏览探索页面，查找社区共享的学习资料。',
+    'dashboard.tipCountdown': '添加考试日期到倒计时，保持学习节奏。',
     // Home / Documents
     'home.welcome': '欢迎使用 Otto-Hub',
     'home.description': '你的 AI 学习助手。上传任何文档，将其变成速查表、摘要和练习题。',
