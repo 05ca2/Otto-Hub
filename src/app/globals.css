@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  --bg-primary: #f7f7f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eeeef1;
+  --text-primary: #1f2129;
+  --text-secondary: #4b4e58;
+  --text-muted: #8a8d99;
+  --border-primary: #eeeef1;
+  --border-secondary: #d8d9df;
+}
+
+.dark {
+  --bg-primary: #0f1115;
+  --bg-secondary: #1f2129;
+  --bg-tertiary: #353840;
+  --text-primary: #eeeef1;
+  --text-secondary: #d8d9df;
+  --text-muted: #8a8d99;
+  --border-primary: #353840;
+  --border-secondary: #4b4e58;
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  @apply bg-accent-400/40;
+}
+
+/* Reader highlight styles */
+.hi-yellow { background-color: theme(colors.hi.yellow); }
+.hi-green  { background-color: theme(colors.hi.green); }
+.hi-pink   { background-color: theme(colors.hi.pink); }
+.hi-blue   { background-color: theme(colors.hi.blue); }
+.hi-active { outline: 2px solid theme(colors.accent.500); outline-offset: 1px; }
+
+.markdown-body h1 { @apply text-2xl font-bold mt-6 mb-3 dark:text-ink-100; }
+.markdown-body h2 { @apply text-xl font-semibold mt-5 mb-2 dark:text-ink-100; }
+.markdown-body h3 { @apply text-lg font-semibold mt-4 mb-2 dark:text-ink-100; }
+.markdown-body p  { @apply my-2 leading-relaxed dark:text-ink-200; }
+.markdown-body ul { @apply list-disc pl-6 my-2 dark:text-ink-200; }
+.markdown-body ol { @apply list-decimal pl-6 my-2 dark:text-ink-200; }
+.markdown-body li { @apply dark:text-ink-200; }
+.markdown-body code { @apply px-1 py-0.5 rounded text-sm font-mono; background-color: var(--bg-tertiary); }
+.markdown-body pre  { @apply rounded-lg p-4 overflow-x-auto my-3; background-color: #1f2129; color: #eeeef1; }
+.markdown-body pre code { @apply bg-transparent p-0; }
+.markdown-body blockquote { @apply border-l-4 pl-4 italic my-3; border-color: var(--border-secondary); color: var(--text-secondary); }
+.markdown-body table { @apply my-3 border-collapse; }
+.markdown-body th, .markdown-body td { @apply border px-2 py-1; border-color: var(--border-secondary); }
+.markdown-body strong { @apply dark:text-ink-100; }
+.markdown-body em { @apply dark:text-ink-200; }
+.markdown-body a { @apply text-accent-600 dark:text-accent-400 hover:underline; }
+.markdown-body img { @apply max-w-full h-auto rounded-lg my-2; }
+
+/* ===== Laurel Wreath Avatar Frames ===== */
+/* Bronze Laurel - smallest, simplest */
+.frame-laurel-bronze {
+  box-shadow: 
+    0 0 0 2.5px #cd7f32,
+    0 0 0 4px rgba(205, 127, 50, 0.3);
+  border-radius: 50%;
+}
+
+/* Silver Laurel - slightly bigger */
+.frame-laurel-silver {
+  box-shadow: 
+    0 0 0 2.5px #c0c0c0,
+    0 0 0 5px rgba(192, 192, 192, 0.3),
+    0 0 8px rgba(192, 192, 192, 0.2);
+  border-radius: 50%;
+}
+
+/* Golden Laurel - radiant glow */
+.frame-laurel-gold {
+  box-shadow: 
+    0 0 0 3px #ffd700,
+    0 0 0 6px rgba(255, 215, 0, 0.3),
+    0 0 12px rgba(255, 215, 0, 0.25),
+    0 0 20px rgba(255, 215, 0, 0.1);
+  border-radius: 50%;
+}
+
+/* Prismatic Laurel - rainbow shimmer */
+.frame-laurel-rainbow {
+  box-shadow: 
+    0 0 0 3px transparent,
+    0 0 0 6px rgba(168, 85, 247, 0.2),
+    0 0 12px rgba(168, 85, 247, 0.15);
+  background-image: 
+    linear-gradient(var(--bg-primary, #fff), var(--bg-primary, #fff)),
+    conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 50%;
+}
+
+/* Neon Laurel - electric glow */
+.frame-laurel-neon {
+  box-shadow: 
+    0 0 0 3px #00ffcc,
+    0 0 0 6px rgba(0, 255, 204, 0.25),
+    0 0 10px rgba(0, 255, 204, 0.3),
+    0 0 20px rgba(0, 255, 204, 0.15),
+    0 0 30px rgba(0, 255, 204, 0.08);
+  border-radius: 50%;
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neon-pulse {
+  from { box-shadow: 0 0 0 3px #00ffcc, 0 0 0 6px rgba(0,255,204,0.25), 0 0 10px rgba(0,255,204,0.3), 0 0 20px rgba(0,255,204,0.15); }
+  to   { box-shadow: 0 0 0 3px #00ffcc, 0 0 0 8px rgba(0,255,204,0.35), 0 0 15px rgba(0,255,204,0.4), 0 0 30px rgba(0,255,204,0.2); }
+}
+
+/* Diamond Laurel - sparkle + inner glow */
+.frame-laurel-diamond {
+  box-shadow: 
+    0 0 0 3px #b9f2ff,
+    0 0 0 7px rgba(185, 242, 255, 0.25),
+    0 0 12px rgba(185, 242, 255, 0.3),
+    0 0 24px rgba(185, 242, 255, 0.15),
+    inset 0 0 8px rgba(185, 242, 255, 0.1);
+  border-radius: 50%;
+  animation: diamond-sparkle 3s ease-in-out infinite;
+}
+
+@keyframes diamond-sparkle {
+  0%, 100% { box-shadow: 0 0 0 3px #b9f2ff, 0 0 0 7px rgba(185,242,255,0.25), 0 0 12px rgba(185,242,255,0.3), 0 0 24px rgba(185,242,255,0.15), inset 0 0 8px rgba(185,242,255,0.1); }
+  50% { box-shadow: 0 0 0 3px #b9f2ff, 0 0 0 9px rgba(185,242,255,0.35), 0 0 18px rgba(185,242,255,0.4), 0 0 36px rgba(185,242,255,0.2), inset 0 0 12px rgba(185,242,255,0.15); }
+}
+
+/* Inferno Laurel - blazing fire, biggest */
+.frame-laurel-flame {
+  box-shadow: 
+    0 0 0 3.5px #ff4500,
+    0 0 0 7px rgba(255, 69, 0, 0.3),
+    0 0 12px rgba(255, 69, 0, 0.4),
+    0 0 24px rgba(255, 69, 0, 0.2),
+    0 0 36px rgba(255, 140, 0, 0.1),
+    inset 0 0 10px rgba(255, 69, 0, 0.15);
+  border-radius: 50%;
+  animation: flame-flicker 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes flame-flicker {
+  from { box-shadow: 0 0 0 3.5px #ff4500, 0 0 0 7px rgba(255,69,0,0.3), 0 0 12px rgba(255,69,0,0.4), 0 0 24px rgba(255,69,0,0.2), 0 0 36px rgba(255,140,0,0.1), inset 0 0 10px rgba(255,69,0,0.15); }
+  to   { box-shadow: 0 0 0 3.5px #ff6a00, 0 0 0 9px rgba(255,106,0,0.35), 0 0 16px rgba(255,69,0,0.5), 0 0 32px rgba(255,69,0,0.25), 0 0 44px rgba(255,140,0,0.15), inset 0 0 14px rgba(255,69,0,0.2); }
+}
+
+/* Admin Tech Frame - circuit board aesthetic */
+.frame-admin-tech {
+  position: relative;
+  box-shadow: 
+    0 0 0 2.5px #00d4ff,
+    0 0 0 5px rgba(0, 212, 255, 0.2),
+    0 0 10px rgba(0, 212, 255, 0.3),
+    0 0 20px rgba(0, 212, 255, 0.1);
+  border-radius: 50%;
+  animation: admin-glow 2.5s ease-in-out infinite alternate;
+}
+
+.frame-admin-tech::after {
+  content: '⚙';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  font-size: 14px;
+  background: linear-gradient(135deg, #00d4ff, #0066ff);
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-primary, #fff);
+  line-height: 1;
+}
+
+@keyframes admin-glow {
+  from { box-shadow: 0 0 0 2.5px #00d4ff, 0 0 0 5px rgba(0,212,255,0.2), 0 0 10px rgba(0,212,255,0.3), 0 0 20px rgba(0,212,255,0.1); }
+  to   { box-shadow: 0 0 0 2.5px #00d4ff, 0 0 0 7px rgba(0,212,255,0.3), 0 0 15px rgba(0,212,255,0.4), 0 0 30px rgba(0,212,255,0.15); }
+}

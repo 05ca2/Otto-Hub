@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <!-- O: Dark blue circle with white bear face -->
+  <circle cx="170" cy="200" r="150" fill="#1a2744"/>
+  
+  <!-- Bear face (white circle) -->
+  <circle cx="170" cy="205" r="95" fill="#f0f0f0"/>
+  
+  <!-- Bear ears -->
+  <circle cx="110" cy="135" r="28" fill="#f0f0f0"/>
+  <circle cx="110" cy="135" r="15" fill="#1a2744" opacity="0.15"/>
+  <circle cx="230" cy="135" r="28" fill="#f0f0f0"/>
+  <circle cx="230" cy="135" r="15" fill="#1a2744" opacity="0.15"/>
+  
+  <!-- Bear eyes -->
+  <circle cx="140" cy="190" r="10" fill="#1a1a1a"/>
+  <circle cx="200" cy="190" r="10" fill="#1a1a1a"/>
+  <circle cx="143" cy="187" r="3.5" fill="white"/>
+  <circle cx="203" cy="187" r="3.5" fill="white"/>
+  
+  <!-- Bear nose -->
+  <ellipse cx="170" cy="215" rx="12" ry="8" fill="#1a1a1a"/>
+  
+  <!-- Bear mouth -->
+  <path d="M155 228 Q170 243 185 228" stroke="#1a1a1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- H: Dark blue with circuit traces -->
+  <rect x="340" y="50" width="50" height="300" rx="8" fill="#1a2744"/>
+  <rect x="530" y="50" width="50" height="300" rx="8" fill="#1a2744"/>
+  <rect x="390" y="160" width="140" height="50" rx="8" fill="#1a2744"/>
+  
+  <!-- Circuit traces on H -->
+  <!-- Horizontal lines -->
+  <line x1="440" y1="230" x2="530" y2="230" stroke="white" stroke-width="2.5" opacity="0.6"/>
+  <line x1="440" y1="260" x2="510" y2="260" stroke="white" stroke-width="2.5" opacity="0.6"/>
+  <line x1="440" y1="130" x2="530" y2="130" stroke="white" stroke-width="2.5" opacity="0.6"/>
+  
+  <!-- Vertical trace -->
+  <line x1="510" y1="130" x2="510" y2="260" stroke="white" stroke-width="2.5" opacity="0.6"/>
+  
+  <!-- Circuit nodes (dots) -->
+  <circle cx="530" cy="130" r="6" fill="white" opacity="0.8"/>
+  <circle cx="530" cy="230" r="6" fill="white" opacity="0.8"/>
+  <circle cx="510" cy="260" r="6" fill="white" opacity="0.8"/>
+  <circle cx="510" cy="130" r="4" fill="#1a2744"/>
+  
+  <!-- Small circuit branches -->
+  <line x1="530" y1="130" x2="555" y2="110" stroke="white" stroke-width="2" opacity="0.5"/>
+  <line x1="530" y1="230" x2="555" y2="250" stroke="white" stroke-width="2" opacity="0.5"/>
+  <circle cx="555" cy="110" r="3.5" fill="white" opacity="0.6"/>
+  <circle cx="555" cy="250" r="3.5" fill="white" opacity="0.6"/>
+</svg>

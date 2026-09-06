@@ -1,0 +1,23 @@
+services:
+  app:
+    build: .
+    container_name: ai-study-hub
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production
+      - AUTH_SECRET=${AUTH_SECRET:-please-change-me-to-a-random-32-char-string}
+      - GITHUB_ID=${GITHUB_ID:-}
+      - GITHUB_SECRET=${GITHUB_SECRET:-}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - FROM_EMAIL=Otto-Hub <noreply@otto-hub.com>
+      - GITHUB_PAT=${GITHUB_PAT:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
