@@ -124,7 +124,7 @@ export default function ShopPage() {
 
   function getTaskReward(type: string): number {
     const rewards: Record<string, number> = {
-      daily_login: 10, upload_document: 15, post_question: 20,
+      daily_login: 5, upload_document: 15, post_question: 20,
       receive_upvote: 5, answer_question: 15,
     };
     return rewards[type] || 5;
